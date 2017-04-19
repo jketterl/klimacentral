@@ -1,0 +1,16 @@
+{
+  "name": "klimacentral",
+  "version": "1.0.0",
+  "description": "central climate logger and visualizer",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Jakob Ketterl <jakob.ketterl@gmx.de>",
+  "license": "LGPL-3.0",
+  "dependencies": {
+    "body-parser": "^1.17.1",
+    "express": "^4.15.2",
+    "influx": "^5.0.7"
+  }
+}
