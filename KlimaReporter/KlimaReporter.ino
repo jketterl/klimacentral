@@ -1,36 +1,20 @@
-#include <Adafruit_Sensor.h>
-#include <DHT.h>
-#include <DHT_U.h>
-
-/*
- *  HTTP over TLS (HTTPS) example sketch
- *
- *  This example demonstrates how to use
- *  WiFiClientSecure class to access HTTPS API.
- *  We fetch and display the status of
- *  esp8266/Arduino project continuous integration
- *  build.
- *
- *  Created by Ivan Grokhotkov, 2015.
- *  This example is in public domain.
- */
-
 #include <ESP8266WiFi.h>
 #include <WiFiClient.h>
-#include <DHT.h>
+#include "am2320.h"
+#include <Wire.h>
 
 const char* ssid = "...";
 const char* password = "...";
 
 const char* host = "klima.justjakob.de";
-const char* tag = "klima01";
+const char* tag = "klima04";
 
-#define DHT_PIN D2
-#define DHT_TYPE DHT22
-DHT dht(DHT_PIN, DHT_TYPE);
+TwoWire wire;
+AM2320 sensor = AM2320(wire);
 
 void setup() {
-  dht.begin();
+  wire.begin(SDA, SCL);
+  sensor.begin();
 
   Serial.begin(115200);
   Serial.println();
@@ -45,9 +29,12 @@ void setup() {
   Serial.println("WiFi connected");
   Serial.println("IP address: ");
   Serial.println(WiFi.localIP());
+}
 
-  float humidity = dht.readHumidity();
-  float temperature = dht.readTemperature();
+void loop() {
+  sensor.read();
+  float humidity = sensor.getHumidity();
+  float temperature = sensor.getTemperature();
 
   Serial.print("temp: ");
   Serial.println(temperature);
@@ -93,7 +80,5 @@ void setup() {
   Serial.println("going to deep sleep...");
 
   ESP.deepSleep(30 * 1e6);
-}
-
-void loop() {
+  //delay(30000);
 }
