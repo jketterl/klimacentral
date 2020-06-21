@@ -5,6 +5,11 @@ var express = require('express'),
 var app = express();
 app.use(bodyParser.json());
 
+app.use(function(err, req, res, next) {
+    if (err) console.info(err);
+    next(err);
+});
+
 app.post('/api/klima', function(req, res) {
     console.info(req.body);
     influx.writePoints([{
@@ -17,6 +22,10 @@ app.post('/api/klima', function(req, res) {
     }]).then(function(){
         res.json({"success":true});
     });
+});
+
+app.get('/status', function(req, res) {
+    res.send("OK");
 });
 
 app.listen(4000);
